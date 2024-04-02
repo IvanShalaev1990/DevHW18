@@ -1,7 +1,10 @@
 package com.noteAPI.controller.responce.note;
 
 import com.noteAPI.database.entity.Note;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component

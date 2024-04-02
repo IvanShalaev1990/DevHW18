@@ -6,11 +6,8 @@ import com.noteAPI.database.entity.Note;
 import com.noteAPI.database.entity.User;
 import com.noteAPI.repository.NoteRepository;
 import com.noteAPI.repository.UserRepository;
-import com.noteAPI.service.auth.AuthService;
 import com.noteAPI.validation.NoteValidationService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;

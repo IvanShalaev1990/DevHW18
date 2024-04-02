@@ -13,21 +13,26 @@ import com.noteAPI.controller.responce.user.UserDeleteResponse;
 import com.noteAPI.controller.responce.user.UserUpdateResponse;
 import com.noteAPI.database.entity.Note;
 import com.noteAPI.database.entity.User;
-import com.noteAPI.service.auth.AuthService;
-import com.noteAPI.service.note.*;
+import com.noteAPI.service.note.NoteCreateService;
+import com.noteAPI.service.note.NoteDeleteService;
+import com.noteAPI.service.note.NoteGetByIdService;
+import com.noteAPI.service.note.NoteUpdateService;
 import com.noteAPI.service.user.UserDeleteService;
 import com.noteAPI.service.user.UserInfoService;
 import com.noteAPI.service.user.UserUpdateService;
+import com.noteAPI.service.note.NoteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -46,7 +51,6 @@ public class UserController {
     private final UserInfoService userInfoService;
     private final UserDeleteService userDeleteService;
     private final UserUpdateService userUpdateService;
-    private static final Logger LOG = LoggerFactory.getLogger(AuthService.class);
 
 
     @GetMapping("/note/list")
@@ -62,7 +66,7 @@ public class UserController {
     }
 
     @PostMapping("/note/delete")
-    public NoteDeleteResponse delete(@Autowired Principal principal, @RequestBody NoteDeleteRequest request) {
+    public NoteDeleteResponse deleteNote(@Autowired Principal principal, @RequestBody NoteDeleteRequest request) {
         return noteDeleteService.deleteNoteById(principal, request.getId());
     }
     @GetMapping("/note/getById/{id}")
@@ -70,7 +74,7 @@ public class UserController {
         return noteGetByIdService.noteGetById(principal,id);
     }
     @PostMapping("/note/update")
-    public NoteUpdateResponse update(@Autowired Principal principal, @RequestBody NoteUpdateRequest request) {
+    public NoteUpdateResponse updateNote(@Autowired Principal principal, @RequestBody NoteUpdateRequest request) {
         return noteUpdateService.noteUpdate(principal,request);
     }
     @GetMapping("/info")
@@ -78,11 +82,11 @@ public class UserController {
         return userInfoService.getUserInfo(principal);
     }
     @PostMapping("/delete")
-    public UserDeleteResponse delete(@Autowired Principal principal, @RequestBody UserDeleteRequest request) {
+    public UserDeleteResponse deleteUser(@Autowired Principal principal, @RequestBody UserDeleteRequest request) {
         return userDeleteService.deleteUserById(principal, request.getId());
     }
     @PostMapping("/update")
-    public UserUpdateResponse update(@Autowired Principal principal, @RequestBody UserUpdateRequest request) {
+    public UserUpdateResponse updateUser(@Autowired Principal principal, @RequestBody UserUpdateRequest request) {
         return userUpdateService.userUpdate(principal, request);
     }
 }

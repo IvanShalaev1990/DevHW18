@@ -26,7 +26,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 import java.util.List;
@@ -62,7 +67,7 @@ public class AdminController {
     }
 
     @PostMapping("/note/delete")
-    public NoteDeleteResponse delete(@Autowired Principal principal, @RequestBody NoteDeleteRequest request) {
+    public NoteDeleteResponse deleteNote(@Autowired Principal principal, @RequestBody NoteDeleteRequest request) {
         return noteDeleteService.deleteNoteById(principal, request.getId());
     }
 
@@ -72,12 +77,12 @@ public class AdminController {
     }
 
     @PostMapping("/note/update")
-    public NoteUpdateResponse update(@Autowired Principal principal, @RequestBody NoteUpdateRequest request) {
+    public NoteUpdateResponse updateNote(@Autowired Principal principal, @RequestBody NoteUpdateRequest request) {
         return noteUpdateService.noteUpdate(principal, request);
     }
 
     @PostMapping("/user/delete")
-    public UserDeleteResponse delete(@Autowired Principal principal, @RequestBody UserDeleteRequest request) {
+    public UserDeleteResponse deleteUser(@Autowired Principal principal, @RequestBody UserDeleteRequest request) {
         return userDeleteService.deleteUserById(principal, request.getId());
     }
 
@@ -87,7 +92,7 @@ public class AdminController {
     }
 
     @PostMapping("/user/update")
-    public UserUpdateResponse update(@Autowired Principal principal, @RequestBody UserUpdateRequest request) {
+    public UserUpdateResponse updateUser(@Autowired Principal principal, @RequestBody UserUpdateRequest request) {
         return userUpdateService.userUpdate(principal, request);
     }
 }
