@@ -10,7 +10,6 @@ public class UserValidationService {
     private final UserRepository userRepository;
 
     public boolean isEmailValid(String email) {
-        System.out.println("userRepository.countUserWithEmail(email) = " + userRepository.countUserWithEmail(email));
         return userRepository.countUserWithEmail(email) == 0;
     }
     public boolean isPasswordValid(String password) {

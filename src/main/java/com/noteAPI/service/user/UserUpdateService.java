@@ -2,11 +2,14 @@ package com.noteAPI.service.user;
 
 import com.noteAPI.controller.request.user.UserUpdateRequest;
 import com.noteAPI.controller.responce.user.UserUpdateResponse;
+import com.noteAPI.database.entity.Role;
 import com.noteAPI.database.entity.User;
 import com.noteAPI.repository.UserRepository;
 import com.noteAPI.validation.UserValidationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
 
 @Service
 @RequiredArgsConstructor
@@ -15,12 +18,16 @@ public class UserUpdateService {
     private final UserUpdateResponse userUpdateResponse;
     private final UserValidationService userValidationService;
 
-    public UserUpdateResponse userUpdate(UserUpdateRequest request) {
+    public UserUpdateResponse userUpdate(Principal principal,UserUpdateRequest request) {
         if (!userRepository.existsById(request.getId())) {
             return userUpdateResponse.failed("User with id " + request.getId() + " not found");
         }
-        User user = userRepository.findById(request.getId()).orElseThrow();
-        if (!user.getEmail().equals(request.getEmail()) &&
+        User userFromPrincipal = userRepository.findByEmail(principal.getName()).orElseThrow();
+        User userFromRequest = userRepository.findById(request.getId()).orElseThrow();
+        if (!userFromRequest.equals(userFromPrincipal) && !userFromPrincipal.getRole().equals(Role.ADMIN)) {
+            return userUpdateResponse.failed("User not authorized to update user with id " + request.getId());
+        }
+        if (!userFromRequest.getEmail().equals(request.getEmail()) &&
                 !userValidationService.isEmailValid(request.getEmail())) {
                 return userUpdateResponse.failed("Email is not available");
         }
@@ -36,12 +43,12 @@ public class UserUpdateService {
         if (!userValidationService.isAgeValid(request.getAge())) {
             return userUpdateResponse.failed("Age is not valid");
         }
-        user.setEmail(request.getEmail());
-        user.setPasswordHash(request.getPasswordHash());
-        user.setRole(request.getRole());
-        user.setName(request.getName());
-        user.setAge(request.getAge());
-        return userUpdateResponse.success(userRepository.save(user));
+        userFromRequest.setEmail(request.getEmail());
+        userFromRequest.setPasswordHash(request.getPasswordHash());
+        userFromRequest.setRole(request.getRole());
+        userFromRequest.setName(request.getName());
+        userFromRequest.setAge(request.getAge());
+        return userUpdateResponse.success(userRepository.save(userFromRequest));
     }
 
 }

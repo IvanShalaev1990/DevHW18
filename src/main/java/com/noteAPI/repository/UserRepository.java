@@ -10,9 +10,10 @@ import java.util.UUID;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
-//    Optional<User> findByUserName(String username);
-@Query(value = "SELECT COUNT(u.*) FROM users u WHERE u.email = :email",
-        nativeQuery = true)
-    int countUserWithEmail(String email);//check email account
+    Optional<User> findByEmail(String username);
+
+    @Query(value = "SELECT COUNT(u.*) FROM users u WHERE u.email = :email",
+            nativeQuery = true)
+    int countUserWithEmail(String email);
 
 }

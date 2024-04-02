@@ -2,6 +2,7 @@ package com.noteAPI.service.user;
 
 import com.noteAPI.database.entity.User;
 import com.noteAPI.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,33 +11,19 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    private UserRepository userRepository;
-
-    @Autowired
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserRepository userRepository;
 
     public List<User> listAll() {
         return userRepository.findAll();
     }
 
-    public void deleteById(UUID id) {
-        userRepository.deleteById(id);
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
     }
-
-    public void update(User user) {
-
+    public User save(User user) {
         userRepository.save(user);
-    }
-
-    public User getById(UUID id) throws Exception {
-        User user = Optional.ofNullable(userRepository.findById(id))
-                .get()
-                .orElseThrow(() -> new Exception("User not found!"));
         return user;
     }
-
-
 }

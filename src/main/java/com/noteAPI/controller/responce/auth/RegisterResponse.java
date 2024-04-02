@@ -1,4 +1,4 @@
-package com.noteAPI.controller.responce.user;
+package com.noteAPI.controller.responce.auth;
 
 import com.noteAPI.database.entity.User;
 import lombok.AllArgsConstructor;
@@ -12,16 +12,16 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Builder
 @Data
-public class UserUpdateResponse {
+public class RegisterResponse {
     private boolean success;
     private String errorMessage;
     private User user;
 
-    public UserUpdateResponse success(User user) {
-        return UserUpdateResponse.builder().success(true).user(user).build();
+    public RegisterResponse success(User user) {
+        return RegisterResponse.builder().success(true).user(user).build();
     }
 
-    public UserUpdateResponse failed(String errorMessage) {
-        return UserUpdateResponse.builder().success(false).errorMessage(errorMessage).build();
+    public RegisterResponse failed(String errorMessage) {
+        return RegisterResponse.builder().success(false).errorMessage(errorMessage).build();
     }
 }

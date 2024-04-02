@@ -1,6 +1,5 @@
 package com.noteAPI.controller.responce.user;
 
-import com.noteAPI.controller.responce.note.NoteDeleteResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

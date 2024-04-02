@@ -1,8 +1,6 @@
 package com.noteAPI.service.user;
 
-import com.noteAPI.controller.responce.note.NoteGetByIdResponse;
 import com.noteAPI.controller.responce.user.UserGetByIdResponse;
-import com.noteAPI.repository.NoteRepository;
 import com.noteAPI.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

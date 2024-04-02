@@ -22,11 +22,13 @@ import com.noteAPI.service.note.NoteUpdateService;
 import com.noteAPI.service.user.UserUpdateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,13 +47,13 @@ public class AdminController {
     private final NoteGetByIdService noteGetByIdService;
     private final NoteUpdateService noteUpdateService;
 
-
     @GetMapping("/note/list")
     public ResponseEntity<List<Note>> notesList() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(noteService.listAll());
     }
+
     @GetMapping("/user/list")
     public ResponseEntity<List<User>> usersList() {
         return ResponseEntity
@@ -60,27 +62,32 @@ public class AdminController {
     }
 
     @PostMapping("/note/delete")
-    public NoteDeleteResponse delete(@RequestBody NoteDeleteRequest request) {
-     return noteDeleteService.deleteNoteById(request.getId());
+    public NoteDeleteResponse delete(@Autowired Principal principal, @RequestBody NoteDeleteRequest request) {
+        return noteDeleteService.deleteNoteById(principal, request.getId());
     }
+
     @GetMapping("/note/getById/{id}")
-    public NoteGetByIdResponse getByIdNote(@PathVariable("id")UUID id) {
-        return noteGetByIdService.noteGetById(id);
+    public NoteGetByIdResponse getByIdNote(@Autowired Principal principal, @PathVariable("id") UUID id) {
+        return noteGetByIdService.noteGetById(principal, id);
     }
+
     @PostMapping("/note/update")
-    public NoteUpdateResponse update(@RequestBody NoteUpdateRequest request) {
-        return noteUpdateService.noteUpdate(request);
+    public NoteUpdateResponse update(@Autowired Principal principal, @RequestBody NoteUpdateRequest request) {
+        return noteUpdateService.noteUpdate(principal, request);
     }
+
     @PostMapping("/user/delete")
-    public UserDeleteResponse delete(@RequestBody UserDeleteRequest request) {
-        return userDeleteService.deleteUserById(request.getId());
+    public UserDeleteResponse delete(@Autowired Principal principal, @RequestBody UserDeleteRequest request) {
+        return userDeleteService.deleteUserById(principal, request.getId());
     }
+
     @GetMapping("/user/getById/{id}")
-    public UserGetByIdResponse getByIdUser(@PathVariable("id")UUID id) {
+    public UserGetByIdResponse getByIdUser(@PathVariable("id") UUID id) {
         return userGetByIdService.userGetById(id);
     }
+
     @PostMapping("/user/update")
-    public UserUpdateResponse update(@RequestBody UserUpdateRequest request) {
-        return userUpdateService.userUpdate(request);
+    public UserUpdateResponse update(@Autowired Principal principal, @RequestBody UserUpdateRequest request) {
+        return userUpdateService.userUpdate(principal, request);
     }
 }

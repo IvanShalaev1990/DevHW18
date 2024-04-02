@@ -1,7 +1,5 @@
 package com.noteAPI.controller.responce.user;
 
-import com.noteAPI.controller.responce.note.NoteGetByIdResponse;
-import com.noteAPI.database.entity.Note;
 import com.noteAPI.database.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
