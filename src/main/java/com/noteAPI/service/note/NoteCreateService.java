@@ -22,6 +22,7 @@ public class NoteCreateService {
     private final NoteRepository noteRepository;
     private final NoteCreateResponse noteCreateResponse;
     private final NoteValidationService noteValidationService;
+
     public NoteCreateResponse noteCreate(Principal principal, NoteCreateRequest request) {
         if (!noteValidationService.isTitleValid(request.getTitle())) {
             return noteCreateResponse.failed("Title is not valid");
@@ -30,11 +31,8 @@ public class NoteCreateService {
             return noteCreateResponse.failed("Content is not valid");
         }
         User user = userRepository.findByEmail(principal.getName()).orElseThrow();
-        Note note = Note.builder()
-                .userEmail(user)
-                .title(request.getTitle())
-                .content(request.getContent())
-                .build();
+        Note note = Note.builder().userEmail(user).title(request.getTitle()).content(request.getContent()).build();
 
-    return noteCreateResponse.success(noteRepository.save(note));
-}}
+        return noteCreateResponse.success(noteRepository.save(note));
+    }
+}
