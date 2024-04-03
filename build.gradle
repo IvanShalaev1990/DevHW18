@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.4'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id 'checkstyle'
 }
 
 group = 'com'
@@ -40,6 +41,25 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
 }
+checkstyle {
+	toolVersion = '8.29'
+	configFile = file('config/checkstyle/checkstyle.xml')
+	ignoreFailures = false
+	showViolations = true
+}
+
+tasks.named('checkstyleMain').configure {
+	dependsOn 'assemble'
+	description = 'Runs Checkstyle on the main source set.'
+	group = 'verification'
+}
+
+tasks.named('checkstyleTest').configure {
+	dependsOn 'testClasses'
+	description = 'Runs Checkstyle on the test source set.'
+	group = 'verification'
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()
